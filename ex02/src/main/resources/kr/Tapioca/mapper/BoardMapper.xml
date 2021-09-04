@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.Tapioca.mapper.BoardMapper">
+	
+	<select id="getList" resultType="kr.Tapioca.domain.BoardVO">
+		<![CDATA[select * from tbl_Tapioca where bno > 0]]>
+	</select>
+	
+	<insert id="insert">
+		insert into tbl_Tapioca (bno , title , content , writer)
+		values (seq_Tapioca.nextval , #{title} , #{content} , #{writer})
+	</insert>
+	
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="bno" order="BEFORE" resultType="long">
+			select seq_Tapioca.nextval from dual
+		</selectKey>
+		
+		insert into tbl_Tapioca (bno , title , content , writer)
+		values (#{bno} , #{title} , #{content} , #{writer})
+	</insert>
+	
+	<select id="read" resultType="kr.Tapioca.domain.BoardVO">
+		select * from tbl_Tapioca where bno = #{bno}
+	</select>
+	
+	<delete id="delete">
+		delete from tbl_Tapioca where bno = #{bno}
+	</delete>
+	
+	<update id="update">
+		update tbl_Tapioca ,
+		set title = #{title} ,
+		content = #{content} ,
+		writer = #{writer} ,
+		updateDate = sysdate
+		where bno = #{bno}
+	</update>
+</mapper>
